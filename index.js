@@ -13,6 +13,9 @@ document.addEventListener('DOMContentLoaded', function() {
         {name:'November', days:30},
         {name:'December', days:31},
     ]
+    const today = new Date();  // Get today's date
+    const currentDay = today.getDate();  // Day of the month
+    const currentMonth = today.getMonth();  // Month (0-11)
 
     const loadWeekContent = async() =>{ //2- load for each month
         const content = await fetch('week.html');
@@ -24,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const weekContent = await loadWeekContent(); //load the week template
         let previousMonthLastDay = 2; 
 
-        months.forEach (month =>{
+        months.forEach ((month, monthIndex) =>{
             const monthDiv = document.getElementById(month.name);   //select the month div
             const weekContainer = monthDiv.querySelector('.week-container');    //find the week container in month div
             weekContainer.innerHTML = weekContent //insert the week template in week div
@@ -46,6 +49,11 @@ document.addEventListener('DOMContentLoaded', function() {
             while (day <= month.days) {
                 const dayCell = document.createElement('td');
                 dayCell.textContent = day;
+                
+                // Check if this is the current day
+                if (day === currentDay && monthIndex === currentMonth) {
+                    dayCell.classList.add('current-day'); // Add the circle class
+                }
                 weekRow.appendChild(dayCell);
 
                 //if the week is full create a new week row
